@@ -33,3 +33,5 @@ label.pack(pady=20)
 
 # メインループを開始
 window.mainloop()
+
+#ループの停止
