@@ -1,0 +1,35 @@
+import requests
+import tkinter as tk
+
+# URL設定
+url = "https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json"
+
+# 天気情報の取得
+data = requests.get(url).json()
+
+# Tkinterのメインウィンドウの作成
+window = tk.Tk()
+
+# ウィンドウのタイトルを設定
+window.title("天気情報")
+
+# ウィンドウのサイズを設定 (幅x高さ)
+window.geometry("550x150")
+
+# # ウィンドウの背景色を設定
+# window.config(bg="#FFDDDD")
+
+# 天気情報を表示するためのラベルを作成
+weather_info = ""
+for i, dt in enumerate(data[0]["timeSeries"][0]["timeDefines"]):
+    # weather_info += dt + "： " + data[0]["timeSeries"][0]["areas"][0]["winds"][i] + "\n"
+    weather = data[0]["timeSeries"][0]["areas"][0]["weathers"][i]
+    wind = data[0]["timeSeries"][0]["areas"][0]["winds"][i]
+    weather_info += f"{dt}： 天気: {weather}、　　風: {wind}\n\n"
+
+# ラベルを作成してウィンドウに追加
+label = tk.Label(window , text=weather_info , anchor="w", justify="left")
+label.pack(pady=20)
+
+# メインループを開始
+window.mainloop()
