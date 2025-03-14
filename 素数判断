@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素数チェック</title>
+    <script>
+        function isPrime(num) {
+            if (num <= 1) return false;
+            for (let i = 2; i < num; i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        function checkPrime() {
+            const input = document.getElementById('numberInput').value;
+            const number = parseInt(input, 10);
+            if (isNaN(number)) {
+                document.getElementById('result').textContent = '有効な数字を入力してください。';
+                return;
+            }
+            const result = isPrime(number) ? `${number}は素数です。` : `${number}は素数ではありません。`;
+            document.getElementById('result').textContent = result;
+        }
+    </script>
+</head>
+<body>
+    <h1>素数チェック</h1>
+    <label for="numberInput">数字を入力してください:</label>
+    <input type="number" id="numberInput" required>
+    <button onclick="checkPrime()">判定</button>
+    <p id="result"></p>
+</body>
+</html>
