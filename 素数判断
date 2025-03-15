@@ -16,6 +16,12 @@
         .container {
             text-align: center;
         }
+        .selected-mode {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
     </style>
     <script>
         function isPrime(num) {
@@ -38,14 +44,27 @@
         }
 
         function showPrimeCheck() {
+            hideButtons();
+            document.getElementById('modeDisplay').textContent = '素数チェックモード';
             document.getElementById('Check').style.display = 'block';
-            document.getElementById('game').style.display = 'none';
         }
 
         function showGame() {
-            document.getElementById('Check').style.display = 'none';
+            hideButtons();
+            document.getElementById('modeDisplay').textContent = '素数判断ゲームモード';
             document.getElementById('game').style.display = 'block';
             generateRandomNumber();
+        }
+
+        function hideButtons() {
+            document.getElementById('startButtons').style.display = 'none';
+        }
+
+        function backToModeSelection() {
+            document.getElementById('Check').style.display = 'none';
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('startButtons').style.display = 'block';
+            document.getElementById('modeDisplay').textContent = 'モードを選んでください';
         }
 
         function generateRandomNumber() {
@@ -67,8 +86,11 @@
 <body>
     <div class="container">
         <h1>素数プログラム</h1>
-        <button onclick="showPrimeCheck()" style="font-size: 24px;">素数チェック</button>
-        <button onclick="showGame()" style="font-size: 24px;">素数判断ゲーム</button>
+        <p id="modeDisplay" class="selected-mode">モードを選んでください</p>
+        <div id="startButtons">
+            <button onclick="showPrimeCheck()" style="font-size: 24px;">素数チェック</button>
+            <button onclick="showGame()" style="font-size: 24px;">素数判断ゲーム</button>
+        </div>
         
         <div id="Check" style="display:none;">
             <h2>素数チェック</h2>
@@ -76,6 +98,7 @@
             <input type="number" id="numberInput" required>
             <button onclick="checkPrime()">判定</button>
             <p id="result"></p>
+            <button onclick="backToModeSelection()">モード選択に戻る</button>
         </div>
 
         <div id="game" style="display:none;">
@@ -87,8 +110,8 @@
                 <button onclick="answerPrime(false)">素数ではない</button>
             </div>
             <p id="primeAnswer"></p>
+            <button onclick="backToModeSelection()">モード選択に戻る</button>
         </div>
     </div>
 </body>
 </html>
-
