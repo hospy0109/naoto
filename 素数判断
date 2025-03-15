@@ -26,34 +26,30 @@
     <script>
         function isPrime(num) {
             if (num <= 1) return false;
-            for (let i = 2; i < num; i++) {
+            for (let i = 2; i < Math.sqrt(num) + 1; i++) {
                 if (num % i === 0) return false;
             }
             return true;
         }
 
-        function checkPrime() {
-            const input = document.getElementById('numberInput').value;
-            const number = parseInt(input, 10);
-            if (isNaN(number)) {
-                document.getElementById('result').textContent = '有効な数字を入力してください。';
-                return;
-            }
-            const result = isPrime(number) ? `${number}は素数です。` : `${number}は素数ではありません。`;
-            document.getElementById('result').textContent = result;
-        }
-
-        function showPrimeCheck() {
-            hideButtons();
-            document.getElementById('modeDisplay').textContent = '素数チェックモード';
-            document.getElementById('Check').style.display = 'block';
-        }
-
-        function showGame() {
+        function startGame() {
             hideButtons();
             document.getElementById('modeDisplay').textContent = '素数判断ゲームモード';
-            document.getElementById('game').style.display = 'block';
-            generateRandomNumber();
+            countdownToStart(3); // 3秒カウントダウンを開始
+        }
+
+        function countdownToStart(seconds) {
+            if (seconds > 0) {
+                document.getElementById('modeDisplay').textContent = `${seconds}...`;
+                setTimeout(() => countdownToStart(seconds - 1), 1000); // 1秒ごとに減少
+            } else {
+                document.getElementById('modeDisplay').textContent = 'ゲームスタート！'; // ゲームスタートを表示
+                setTimeout(() => {
+                    document.getElementById('modeDisplay').textContent = ''; // 「ゲームスタート」を消去
+                    document.getElementById('game').style.display = 'block'; // クイズ部分を表示
+                    generateRandomNumber();
+                }, 1000); // 1秒後に「ゲームスタート」を消去しゲーム開始
+            }
         }
 
         function hideButtons() {
@@ -74,12 +70,36 @@
             document.getElementById('primeAnswer').textContent = '';
         }
 
+        function nextQuestionWithDelay() {
+            document.getElementById('primeAnswer').textContent = '次の問題に移ります...';
+            setTimeout(generateRandomNumber, 1000); // 1秒後に次の問題を生成
+        }
+
         function answerPrime(isPrimeAnswer) {
             const randomNumber = parseInt(document.getElementById('randomNumber').textContent.replace('ランダムな数字: ', ''), 10);
             const correctAnswer = isPrime(randomNumber) ? '素数' : '素数ではない';
             const userAnswer = isPrimeAnswer ? '素数' : '素数ではない';
             const resultText = (correctAnswer === userAnswer) ? '正解です！' : `間違いです。${randomNumber}は${correctAnswer}です。`;
             document.getElementById('primeAnswer').textContent = resultText;
+
+            setTimeout(nextQuestionWithDelay, 1000); // 正解・不正解後1秒で次の問題
+        }
+
+        function showPrimeCheck() {
+            hideButtons();
+            document.getElementById('modeDisplay').textContent = '素数チェックモード';
+            document.getElementById('Check').style.display = 'block';
+        }
+
+        function checkPrime() {
+            const input = document.getElementById('numberInput').value;
+            const number = parseInt(input, 10);
+            if (isNaN(number)) {
+                document.getElementById('result').textContent = '有効な数字を入力してください。';
+                return;
+            }
+            const result = isPrime(number) ? `${number}は素数です。` : `${number}は素数ではありません。`;
+            document.getElementById('result').textContent = result;
         }
     </script>
 </head>
@@ -89,7 +109,7 @@
         <p id="modeDisplay" class="selected-mode">モードを選んでください</p>
         <div id="startButtons">
             <button onclick="showPrimeCheck()" style="font-size: 24px;">素数チェック</button>
-            <button onclick="showGame()" style="font-size: 24px;">素数判断ゲーム</button>
+            <button onclick="startGame()" style="font-size: 24px;">素数判断ゲーム</button>
         </div>
         
         <div id="Check" style="display:none;">
