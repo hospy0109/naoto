@@ -64,11 +64,17 @@
         }
 
         function generateRandomNumber() {
-            const randomNumber = Math.floor(Math.random() * 100) + 1; // 1から100までのランダムな自然数を生成
+            const candidates = [0, 1, 2]; // Start with 0, 1, and 2
+            for (let i = 3; i <= 99; i += 2) { // Add all odd numbers from 3 to 99
+                candidates.push(i);
+            }
+            const randomIndex = Math.floor(Math.random() * candidates.length); // Pick a random index
+            const randomNumber = candidates[randomIndex]; // Get the random number
             document.getElementById('randomNumber').textContent = `ランダムな数字: ${randomNumber}`;
             document.getElementById('primeQuestion').style.display = 'block';
             document.getElementById('primeAnswer').textContent = '';
         }
+
 
         function nextQuestionWithDelay() {
             document.getElementById('primeAnswer').textContent = '次の問題に移ります...';
